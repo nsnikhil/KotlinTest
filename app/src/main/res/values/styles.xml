@@ -1,0 +1,56 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryLight">@color/colorPrimaryLight</item>
+
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryDark">@color/colorSecondaryDark</item>
+        <item name="colorSecondaryLight">@color/colorSecondaryLight</item>
+
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:windowLightStatusBar">true</item>
+
+    </style>
+
+    <style name="wrapContent">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="matchParent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="vertical" parent="wrapContent">
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="horizontal" parent="wrapContent">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="appBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?actionBarSize</item>
+    </style>
+
+    <style name="listItemText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/work_sans</item>
+        <item name="android:text">@string/app_name</item>
+        <item name="android:textSize">@dimen/listItemHeading</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="listItemSub" parent="listItemText">
+        <item name="android:textSize">@dimen/listItemSub</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+</resources>

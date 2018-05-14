@@ -1,0 +1,98 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext.kotlin_version = '1.2.41'
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.0-alpha14'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0-alpha01"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+
+    androidKTXVersion = "1.0.0-alpha1"
+
+    materialComponentVersion="1.0.0-alpha1"
+
+    supportLibVersion = "28.0.0-alpha1"
+
+    constraintLayoutVersion = "1.1.0"
+
+    findBugJsr305Version = "3.0.2"
+
+    rxJavaVersion = "2.1.12"
+
+    rxAndroidVersion = "2.0.2"
+
+    rxBindingVersion = "2.1.1"
+
+    timberVersion = "4.7.0"
+
+    daggerVersion = "2.15"
+
+    eventBusVersion = "3.1.1"
+
+    autoValueVersion = "1.6"
+
+    autoParcelVersion = "0.2.6"
+
+    autoValueGsonExtension = "0.7.0"
+
+    leakCanaryVersion = "1.5.4"
+
+    blockCanaryVersion = "1.5.0"
+
+    architectureComponentVersion = "2.0.0-alpha1"
+
+    roomVersion = "2.0.0-alpha1"
+
+    pagingVersion = "2.0.0-alpha1"
+
+    navVersion = "1.0.0-alpha01"
+
+    workVersion = "1.0.0-alpha01"
+
+    serialVersion = "0.1.6"
+
+    mockitoVersion = "2.16.0"
+
+    retrofitVersion = "2.4.0"
+
+    gsonVersion = "2.8.2"
+
+    gsonConverterVersion = "2.4.0"
+
+    rxJavaAdapterVersion = "2.4.0"
+
+    okHttp3InterceptorVersion = "3.10.0"
+
+    jetBrainsAnnotationVersion = "16.0.1"
+
+    jUnitVersion = "4.12"
+
+    runnerVersion = "1.0.1"
+
+    rulesVersion = "1.0.1"
+
+    orchestratorVersion = "1.0.1"
+
+    espressoVersion = "3.0.2"
+
+    roboElectricVersion = "3.8"
+}

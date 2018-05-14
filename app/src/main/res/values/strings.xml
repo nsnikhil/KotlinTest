@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">KotlinTest</string>
+
+    <string name="noInternet">No Internet</string>
+
+    <!-- DIALOG TEXT-->
+    <string name="dialogNameHint">Name</string>
+    <string name="dialogPhoneHint">Phone No</string>
+    <!-- -->
+
+    <!-- MENU-->
+    <string name="menuMainAbout">About</string>
+
+
+
+</resources>
