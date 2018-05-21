@@ -28,7 +28,7 @@ class UserListViewModel(application: Application) : AndroidViewModel(application
 
     private val networkUtil: NetworkUtil = (application as MyApplication).networkUtil
     private val databaseUtil: DatabaseUtil = (application as MyApplication).databaseUtil
-    lateinit var userList: MutableLiveData<List<UserEntity>>
+    var userList: MutableLiveData<List<UserEntity>>
 
     init {
         networkUtil.getUserListFromServer()

@@ -37,12 +37,33 @@ class NetworkUtil @Inject constructor(private val retrofit: Retrofit) {
 
     fun getUserListFromServer() {
         retrofit.create(RetrofitServiceApi::class.java)
-                .getDemoList()
+                .getUserList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<List<UserEntity>> {
                     override fun onSuccess(t: List<UserEntity>) {
                         mUserList.value = t
+                    }
+
+                    override fun onSubscribe(d: Disposable) {
+
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Timber.d(e)
+                    }
+
+                })
+    }
+
+    fun addUser(userEntity: UserEntity?) {
+        retrofit.create(RetrofitServiceApi::class.java)
+                .addUser(userEntity?.name, userEntity?.age, userEntity?.phone, userEntity?.address, userEntity?.email, userEntity?.date, userEntity?.avatar)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : SingleObserver<String> {
+                    override fun onSuccess(t: String) {
+                        Timber.d(t)
                     }
 
                     override fun onSubscribe(d: Disposable) {

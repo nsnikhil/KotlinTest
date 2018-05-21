@@ -18,11 +18,39 @@ package com.nsnik.nrs.kotlintest.utils
 
 import com.nsnik.nrs.kotlintest.data.UserEntity
 import io.reactivex.Single
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 
 interface RetrofitServiceApi {
 
-    @GET("/php/readAll.php")
-    fun getDemoList(): Single<List<UserEntity>>
+    @GET("/php/postgreSQLReadAll.php")
+    fun getUserList(): Single<List<UserEntity>>
+
+    @FormUrlEncoded
+    @POST("/php/postgreSQLInsert.php")
+    fun addUser(@Field("name") name: String?,
+                @Field("age") age: Int?,
+                @Field("phone") phone: Double?,
+                @Field("address") address: String?,
+                @Field("email") email: String?,
+                @Field("date") date: String?,
+                @Field("avatar") avatar: String?): Single<String>
+
+    @FormUrlEncoded
+    @POST("/php/postgreSQLUpdate.php")
+    fun updateUser(@Field("id") id: Int?,
+                   @Field("name") name: String?,
+                   @Field("age") age: Int?,
+                   @Field("phone") phone: Double?,
+                   @Field("address") address: String?,
+                   @Field("email") email: String?,
+                   @Field("date") date: String?,
+                   @Field("avatar") avatar: String?): Single<String>
+
+    @FormUrlEncoded
+    @POST("/php/postgreSQLDelete.php")
+    fun deleteUser(@Field("id") id: Int?): Single<String>
 }

@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~    Copyright 2018 nsnikhil
   ~
   ~    Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +15,7 @@
   -->
 
 
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/detailsList"
-    style="@style/matchParent"
-    tools:context="com.nsnik.nrs.kotlintest.views.fragments.DetailsFragment" />
+<androidx.appcompat.widget.AppCompatImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detailsImage"
+    style="@style/horizontal"
+    android:src="@drawable/ic_outline_person_24px" />

@@ -17,6 +17,7 @@
 package com.nsnik.nrs.kotlintest.views.adapters
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,8 +28,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.kotlintest.R
 import com.nsnik.nrs.kotlintest.data.UserEntity
+import com.twitter.serial.stream.Serial
+import com.twitter.serial.stream.bytebuffer.ByteBufferSerial
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.single_list_item.view.*
 
 class UserListAdapter(private val context: Context?, private var userList: List<UserEntity>) : RecyclerView.Adapter<UserListAdapter.MyViewHolder>() {
@@ -41,6 +43,8 @@ class UserListAdapter(private val context: Context?, private var userList: List<
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val userData: UserEntity? = userList[position]
+        holder.itemName?.text = userData?.name
+        holder.itemPhone?.text = userData?.phone.toString()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -52,13 +56,17 @@ class UserListAdapter(private val context: Context?, private var userList: List<
         notifyDataSetChanged()
     }
 
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemName: TextView? = itemView.itemName
         val itemPhone: TextView? = itemView.itemPhone
         val item: ConstraintLayout? = itemView.listItem
 
         init {
-            RxView.clicks(itemView).subscribe({ run { itemView.findNavController().navigate(R.id.listToDetails) } })
+            val serial: Serial = ByteBufferSerial()
+            val byteArray: ByteArray = serial.toByteArray(userList[adapterPosition], UserEntity.SERIALIZER)
+            val bundle = Bundle()
+            bundle.putByteArray(context?.resources?.getString(R.string.bundleKeyUserEntity), byteArray)
+            compositeDisposable.add(RxView.clicks(itemView).subscribe({ run { itemView.findNavController().navigate(R.id.listToDetails, bundle) } }))
         }
 
     }

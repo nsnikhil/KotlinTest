@@ -21,14 +21,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nsnik.nrs.kotlintest.R
 import com.nsnik.nrs.kotlintest.data.UserEntity
 import com.nsnik.nrs.kotlintest.viewModel.UserListViewModel
 import com.nsnik.nrs.kotlintest.views.adapters.UserListAdapter
+import kotlinx.android.synthetic.main.fragment_list.*
 
-class ListFragment : androidx.fragment.app.Fragment() {
+class ListFragment : Fragment() {
 
     private var userList: List<UserEntity> = mutableListOf()
     private val listAdapter: UserListAdapter = UserListAdapter(activity, userList)
@@ -41,6 +45,8 @@ class ListFragment : androidx.fragment.app.Fragment() {
     }
 
     private fun initialize() {
+        homeList.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+        homeList.adapter = listAdapter
         listViewModel.userList.observe(this, Observer { newUserList -> updateList(newUserList!!) })
     }
 

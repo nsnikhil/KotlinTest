@@ -35,9 +35,9 @@
         android:label="details"
         tools:layout="@layout/fragment_details">
         <argument
-            android:name="userId"
-            android:defaultValue="0"
-            app:type="integer" />
+            android:name="id"
+            android:defaultValue="null"
+            app:type="userEntity" />
     </fragment>
 
 </navigation>

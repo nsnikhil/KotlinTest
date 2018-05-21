@@ -37,8 +37,8 @@ class MyApplication : Application() {
 
     private var refWatcher: RefWatcher? = null
     private val contextModule: ContextModule = ContextModule(this)
-    var networkUtil: NetworkUtil = DaggerNetworkComponent.create().getNetworkUtil()
-    var databaseUtil: DatabaseUtil = DaggerDatabaseComponent.builder().contextModule(contextModule).build().getDatabaseUtil()
+    lateinit var networkUtil: NetworkUtil
+    lateinit var databaseUtil: DatabaseUtil
 
     companion object {
 
@@ -72,6 +72,23 @@ class MyApplication : Application() {
                     .build())
             BlockCanary.install(this, AppBlockCanaryContext()).start()
         }
+        moduleSetter()
     }
+
+    private fun moduleSetter() {
+        setNetworkModule()
+        setDatabaseComponent()
+    }
+
+    private fun setNetworkModule() {
+        val networkComponent = DaggerNetworkComponent.create()
+        networkUtil = networkComponent.getNetworkUtil()
+    }
+
+    private fun setDatabaseComponent() {
+        val databaseComponent = DaggerDatabaseComponent.builder().contextModule(contextModule).build()
+        databaseUtil = databaseComponent.getDatabaseUtil()
+    }
+
 
 }
