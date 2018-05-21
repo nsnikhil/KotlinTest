@@ -16,9 +16,9 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/listItem"
     android:layout_width="match_parent"
     android:layout_height="?listPreferredItemHeight"
-    android:id="@+id/listItem"
     android:padding="@dimen/eight">
 
 
@@ -26,14 +26,14 @@
         android:id="@+id/itemName"
         style="@style/listItemText"
         android:text="@string/app_name"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/itemPhone"/>
+        app:layout_constraintBottom_toTopOf="@id/itemPhone"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/itemPhone"
         style="@style/listItemSub"
         android:text="@string/app_name"
-        app:layout_constraintTop_toBottomOf="@id/itemName"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/itemName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

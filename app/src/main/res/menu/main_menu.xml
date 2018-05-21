@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~    Copyright 2018 nsnikhil
   ~
   ~    Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,9 +16,10 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/mainMenuAbout"
+    <item
+        android:id="@+id/mainMenuAbout"
         android:icon="@drawable/ic_outline_account_circle_24px"
         android:showAsAction="ifRoom"
-        android:title="@string/menuMainAbout"/>
+        android:title="@string/menuMainAbout" />
 
 </menu>

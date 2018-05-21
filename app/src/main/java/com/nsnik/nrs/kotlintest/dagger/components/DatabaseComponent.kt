@@ -24,5 +24,5 @@ import dagger.Component
 @ApplicationScope
 @Component(modules = [(DatabaseModule::class)])
 abstract class DatabaseComponent {
-    abstract fun getDatabaseUtil() : DatabaseUtil
+    abstract fun getDatabaseUtil(): DatabaseUtil
 }

@@ -52,7 +52,7 @@ android {
         }
     }
     testOptions {
-        execution 'ANDROID_TEST_ORCHESTRATOR'
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
     androidExtensions {
         experimental = true
@@ -67,6 +67,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
 
     implementation 'androidx.core:core-ktx:1.0.0-alpha1'
 
@@ -124,7 +125,7 @@ dependencies {
 
     def room_version = "2.0.0-alpha1"
     implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-migration:$room_version"
     implementation "androidx.room:room-rxjava2:$room_version"
     implementation "androidx.room:room-guava:$room_version"
@@ -134,16 +135,16 @@ dependencies {
     implementation "androidx.paging:paging-runtime:$paging_version"
 
     def nav_version = "1.0.0-alpha01"
-    implementation "android.arch.navigation:navigation-runtime-ktx:$nav_version"
-    implementation "android.arch.navigation:navigation-common-ktx:$nav_version"
+//    implementation "android.arch.navigation:navigation-runtime-ktx:$nav_version"
+//    implementation "android.arch.navigation:navigation-common-ktx:$nav_version"
     implementation "android.arch.navigation:navigation-fragment-ktx:$nav_version"
     implementation "android.arch.navigation:navigation-ui-ktx:$nav_version"
     androidTestImplementation "android.arch.navigation:navigation-testing-ktx:$nav_version"
 
-    def work_version = "1.0.0-alpha01"
-    implementation "android.arch.work:work-runtime-ktx:$work_version"
-    implementation "android.arch.work:work-firebase:$work_version"
-    androidTestImplementation "android.arch.work:work-testing:$work_version"
+//    def work_version = "1.0.0-alpha01"
+//    implementation "android.arch.work:work-runtime-ktx:$work_version"
+//    implementation "android.arch.work:work-firebase:$work_version"
+//    androidTestImplementation "android.arch.work:work-testing:$work_version"
 
     implementation "com.squareup.retrofit2:retrofit:2.4.0"
     implementation "com.squareup.okhttp3:logging-interceptor:3.10.0"
@@ -161,15 +162,15 @@ dependencies {
 
     testImplementation "junit:junit:4.12"
 
-    androidTestImplementation 'androidx.test:runner:1.1.0-alpha1'
-    androidTestImplementation 'androidx.test:rules:1.1.0-alpha1'
-    androidTestUtil 'androidx.test:orchestrator:1.1.0-alpha1'
+    androidTestImplementation 'androidx.test:runner:1.1.0-alpha2'
+    androidTestImplementation 'androidx.test:rules:1.1.0-alpha2'
+    androidTestUtil 'androidx.test:orchestrator:1.1.0-alpha2'
 
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha1'
-    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.1.0-alpha1'
-    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.0-alpha1'
-    androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.1.0-alpha1'
-    implementation 'androidx.test.espresso:espresso-idling-resource:3.1.0-alpha1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha2'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.1.0-alpha2'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.0-alpha2'
+    androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.1.0-alpha2'
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.1.0-alpha2'
 
     testImplementation "org.robolectric:robolectric:3.8"
 }

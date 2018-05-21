@@ -76,4 +76,46 @@ class NetworkUtil @Inject constructor(private val retrofit: Retrofit) {
 
                 })
     }
+
+    fun updateUser(userEntity: UserEntity?) {
+        retrofit.create(RetrofitServiceApi::class.java)
+                .updateUser(userEntity?.id, userEntity?.name, userEntity?.age, userEntity?.phone, userEntity?.address, userEntity?.email, userEntity?.date, userEntity?.avatar)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : SingleObserver<String> {
+                    override fun onSuccess(t: String) {
+                        Timber.d(t)
+                    }
+
+                    override fun onSubscribe(d: Disposable) {
+
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Timber.d(e)
+                    }
+
+                })
+    }
+
+    fun deleteUser(userEntity: UserEntity?) {
+        retrofit.create(RetrofitServiceApi::class.java)
+                .deleteUser(userEntity?.id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : SingleObserver<String> {
+                    override fun onSuccess(t: String) {
+                        Timber.d(t)
+                    }
+
+                    override fun onSubscribe(d: Disposable) {
+
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Timber.d(e)
+                    }
+
+                })
+    }
 }
