@@ -22,20 +22,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nsnik.nrs.kotlintest.R
-
+import com.nsnik.nrs.kotlintest.views.adapters.UserInputAdapter
+import kotlinx.android.synthetic.main.user_input_fragment.*
 
 class UserInputFragment : Fragment() {
 
+    private lateinit var userInputAdapter: UserInputAdapter
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.user_input_fragment, container, false)
-        initialize()
         return view
     }
 
-    private fun initialize() {
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initialize()
     }
 
+    private fun initialize() {
+        userInputAdapter = UserInputAdapter(activity)
+
+        addUserList?.apply {
+            layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+            adapter = userInputAdapter
+        }
+    }
 
 }

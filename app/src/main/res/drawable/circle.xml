@@ -14,17 +14,12 @@
   ~    limitations under the License.
   -->
 
-
-<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/inputDialogTextContainer"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/eight">
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/inputDialogText"
-        style="@style/matchParent"
-        android:drawableStart="@drawable/ic_outline_call_24px"
-        android:drawablePadding="@dimen/eight" />
-</com.google.android.material.textfield.TextInputLayout>
-
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/colorAccent" />
+            <stroke android:color="@color/colorAccent" />
+            <size android:width="48dp" android:height="48dp" />
+        </shape>
+    </item>
+</selector>

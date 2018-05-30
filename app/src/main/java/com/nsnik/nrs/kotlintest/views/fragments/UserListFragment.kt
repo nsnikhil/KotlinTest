@@ -26,33 +26,46 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.kotlintest.R
-import com.nsnik.nrs.kotlintest.data.UserEntity
 import com.nsnik.nrs.kotlintest.viewModel.UserListViewModel
 import com.nsnik.nrs.kotlintest.views.adapters.UserListAdapter
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_list.*
 
-class ListFragment : Fragment() {
+class UserListFragment : Fragment() {
 
-    private var userList: List<UserEntity> = mutableListOf()
-    private val listAdapter: UserListAdapter = UserListAdapter(activity, userList)
-    private val listViewModel: UserListViewModel = ViewModelProviders.of(this).get(UserListViewModel::class.java)
+    private lateinit var listAdapter: UserListAdapter
+    private lateinit var listViewModel: UserListViewModel
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view: View = inflater.inflate(R.layout.fragment_list, container, false)
+        return inflater.inflate(R.layout.fragment_list, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initialize()
-        return view
+        listeners()
     }
 
     private fun initialize() {
-        homeList.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-        homeList.adapter = listAdapter
-        listViewModel.userList.observe(this, Observer { newUserList -> updateList(newUserList!!) })
+        listAdapter = UserListAdapter()
+
+
+        homeList?.apply {
+            layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+            adapter = listAdapter
+        }
+
+        listViewModel = ViewModelProviders.of(this).get(UserListViewModel::class.java)
+        listViewModel.userList.observe(this, Observer { newUserList -> listAdapter.submitList(newUserList) })
     }
 
-    private fun updateList(newUserList: List<UserEntity>) {
-        userList = newUserList
-        listAdapter.updateList(userList)
+    private fun listeners() {
+        compositeDisposable.add(RxView.clicks(homeAdd).subscribe({
+
+        }))
     }
 
 }

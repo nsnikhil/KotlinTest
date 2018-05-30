@@ -40,7 +40,7 @@ class DetailsFragment : Fragment() {
     private fun initialize() {
         val serial: Serial = ByteBufferSerial()
         val userEntity: UserEntity? = serial.fromByteArray(arguments?.getByteArray(activity?.resources?.getString(R.string.bundleKeyUserEntity)), UserEntity.SERIALIZER)
-        Timber.d(userEntity?.name)
+        Timber.d(userEntity?.name.toString())
     }
 
 }

@@ -17,6 +17,7 @@
 package com.nsnik.nrs.kotlintest.data
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.*
 
 
@@ -24,25 +25,25 @@ import androidx.room.*
 interface UserDao {
 
     @Query("SELECT * FROM UserEntity")
-    fun getUserList(): LiveData<List<UserEntity>>
+    fun getUserList(): DataSource.Factory<Int, UserEntity>
 
     @Query("SELECT * FROM UserEntity WHERE id = :id")
     fun getUserById(id: Int): LiveData<UserEntity>
 
     @Query("SELECT * FROM UserEntity WHERE name LIKE '%' || :name || '%'")
-    fun getUserByName(name: String): LiveData<List<UserEntity>>
+    fun getUserByName(name: String): DataSource.Factory<Int, UserEntity>
 
     @Query("SELECT * FROM UserEntity WHERE age = :age")
-    fun getUserByAge(age: Int): LiveData<List<UserEntity>>
+    fun getUserByAge(age: Int): DataSource.Factory<Int, UserEntity>
 
     @Query("SELECT * FROM UserEntity WHERE phone LIKE :phone || '%'")
-    fun getUserByPhone(phone: Double): LiveData<List<UserEntity>>
+    fun getUserByPhone(phone: Double): DataSource.Factory<Int, UserEntity>
 
     @Query("SELECT * FROM UserEntity WHERE address LIKE :address || '%'")
-    fun getUserByAddress(address: String): LiveData<List<UserEntity>>
+    fun getUserByAddress(address: String): DataSource.Factory<Int, UserEntity>
 
     @Query("SELECT * FROM UserEntity WHERE email LIKE :email || '%'")
-    fun getUserByEmail(email: String): LiveData<List<UserEntity>>
+    fun getUserByEmail(email: String): DataSource.Factory<Int, UserEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUser(vararg userEntity: UserEntity): List<Long>

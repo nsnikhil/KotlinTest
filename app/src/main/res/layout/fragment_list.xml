@@ -19,15 +19,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/matchParent"
-    tools:context="com.nsnik.nrs.kotlintest.views.fragments.ListFragment">
+    tools:context="com.nsnik.nrs.kotlintest.views.fragments.UserListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/homeList"
-        style="@style/matchParent" />
+        style="@style/matchParent"
+        android:padding="@dimen/eight" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/homeAdd"
-        style="@style/Widget.MaterialComponents.FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"

@@ -30,12 +30,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 @Module(includes = [(ContextModule::class)])
 class NetworkModule {
 
-    private val BASE_URL: String = "http://159.89.165.119"
+    private val baseUrl: String = "http://159.89.165.119"
 
     @Provides
     @BaseUrl
     fun getBaseUrl(): String {
-        return this.BASE_URL
+        return this.baseUrl
     }
 
     @Provides
@@ -47,7 +47,9 @@ class NetworkModule {
 
     @Provides
     fun getOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
-        return OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build()
+        return OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .build()
     }
 
     @Provides

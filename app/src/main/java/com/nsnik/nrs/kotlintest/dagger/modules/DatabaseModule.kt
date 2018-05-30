@@ -28,12 +28,12 @@ import dagger.Provides
 @Module(includes = [(ContextModule::class)])
 class DatabaseModule {
 
-    private val DATABASE_NAME: String = "NA"
+    private val databaseName: String = "user"
 
     @Provides
     @DatabaseName
     fun getDatabaseName(): String {
-        return this.DATABASE_NAME
+        return this.databaseName
     }
 
     @Provides

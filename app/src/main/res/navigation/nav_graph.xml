@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.nsnik.nrs.kotlintest.views.fragments.ListFragment"
+        android:name="com.nsnik.nrs.kotlintest.views.fragments.UserListFragment"
         android:label="list"
         tools:layout="@layout/fragment_list">
         <action

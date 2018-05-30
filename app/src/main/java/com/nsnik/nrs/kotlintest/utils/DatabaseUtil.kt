@@ -17,6 +17,8 @@
 package com.nsnik.nrs.kotlintest.utils
 
 import androidx.lifecycle.LiveData
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.nsnik.nrs.kotlintest.dagger.scopes.ApplicationScope
 import com.nsnik.nrs.kotlintest.data.AppDatabase
 import com.nsnik.nrs.kotlintest.data.UserEntity
@@ -32,32 +34,35 @@ import javax.inject.Inject
 @ApplicationScope
 class DatabaseUtil @Inject constructor(private val appDatabase: AppDatabase) {
 
-    fun getUsersList(): LiveData<List<UserEntity>> {
-        return appDatabase.getUserDao().getUserList()
+    private val pageConfig: PagedList.Config = PagedList.Config.Builder().setPageSize(10)
+            .build()
+
+    fun getUsersList(): LiveData<PagedList<UserEntity>> {
+        return LivePagedListBuilder(appDatabase.getUserDao().getUserList(), pageConfig).build()
     }
 
     fun getUserById(id: Int): LiveData<UserEntity> {
         return appDatabase.getUserDao().getUserById(id)
     }
 
-    fun getUsersByName(name: String): LiveData<List<UserEntity>> {
-        return appDatabase.getUserDao().getUserByName(name)
+    fun getUsersByName(name: String): LiveData<PagedList<UserEntity>> {
+        return LivePagedListBuilder(appDatabase.getUserDao().getUserByName(name), pageConfig).build()
     }
 
-    fun getUsersByAge(age: Int): LiveData<List<UserEntity>> {
-        return appDatabase.getUserDao().getUserByAge(age)
+    fun getUsersByAge(age: Int): LiveData<PagedList<UserEntity>> {
+        return LivePagedListBuilder(appDatabase.getUserDao().getUserByAge(age), pageConfig).build()
     }
 
-    fun getUserByPhone(phone: Double): LiveData<List<UserEntity>> {
-        return appDatabase.getUserDao().getUserByPhone(phone)
+    fun getUserByPhone(phone: Double): LiveData<PagedList<UserEntity>> {
+        return LivePagedListBuilder(appDatabase.getUserDao().getUserByPhone(phone), pageConfig).build()
     }
 
-    fun getUsersByAddress(address: String): LiveData<List<UserEntity>> {
-        return appDatabase.getUserDao().getUserByAddress(address)
+    fun getUsersByAddress(address: String): LiveData<PagedList<UserEntity>> {
+        return LivePagedListBuilder(appDatabase.getUserDao().getUserByAddress(address), pageConfig).build()
     }
 
-    fun getUserByEmail(email: String): LiveData<List<UserEntity>> {
-        return appDatabase.getUserDao().getUserByEmail(email)
+    fun getUserByEmail(email: String): LiveData<PagedList<UserEntity>> {
+        return LivePagedListBuilder(appDatabase.getUserDao().getUserByEmail(email), pageConfig).build()
     }
 
     fun insertUser(userEntity: UserEntity) {
@@ -66,7 +71,7 @@ class DatabaseUtil @Inject constructor(private val appDatabase: AppDatabase) {
                 .observeOn(AndroidSchedulers.mainThread())
         single.subscribe(object : SingleObserver<List<Long>> {
             override fun onSuccess(t: List<Long>) {
-                for (l in t) Timber.d(l.toString())
+                t.forEach { Timber.d(it.toString()) }
             }
 
             override fun onSubscribe(d: Disposable) {
@@ -116,7 +121,6 @@ class DatabaseUtil @Inject constructor(private val appDatabase: AppDatabase) {
             override fun onError(e: Throwable) {
                 Timber.d(e)
             }
-
         })
     }
 }

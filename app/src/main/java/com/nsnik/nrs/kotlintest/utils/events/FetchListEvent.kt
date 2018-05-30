@@ -14,20 +14,8 @@
  *    limitations under the License.
  */
 
-package com.nsnik.nrs.kotlintest.viewModel
+package com.nsnik.nrs.kotlintest.utils.events
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.paging.PagedList
-import com.nsnik.nrs.kotlintest.MyApplication
 import com.nsnik.nrs.kotlintest.data.UserEntity
-import com.nsnik.nrs.kotlintest.utils.DatabaseUtil
 
-class UserListViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val databaseUtil: DatabaseUtil = (application as MyApplication).databaseUtil
-    var userList: LiveData<PagedList<UserEntity>> = databaseUtil.getUsersList()
-
-
-}
+class FetchListEvent(var userList: List<UserEntity>)

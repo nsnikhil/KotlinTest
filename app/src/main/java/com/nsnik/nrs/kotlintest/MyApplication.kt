@@ -90,5 +90,4 @@ class MyApplication : Application() {
         databaseUtil = databaseComponent.getDatabaseUtil()
     }
 
-
 }

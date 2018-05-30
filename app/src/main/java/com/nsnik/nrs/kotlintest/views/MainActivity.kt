@@ -20,12 +20,20 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.core.widget.toast
+import androidx.fragment.app.transaction
 import com.nsnik.nrs.kotlintest.BuildConfig
 import com.nsnik.nrs.kotlintest.MyApplication
 import com.nsnik.nrs.kotlintest.R
+import com.nsnik.nrs.kotlintest.utils.DatabaseUtil
+import com.nsnik.nrs.kotlintest.utils.events.FetchListEvent
+import com.nsnik.nrs.kotlintest.views.fragments.UserInputFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,15 +45,47 @@ class MainActivity : AppCompatActivity() {
 
     private fun initialize() {
         setSupportActionBar(mainToolbar)
+        //TODO REPLACE WITH NAVIGATION AFTER ALPHA 17
+        if (checkConnection()) {
+            //(this.applicationContext as MyApplication).networkUtil.getUserListFromServer()
+            supportFragmentManager.transaction { add(R.id.mainContainer, UserInputFragment()) }
+        }
     }
 
-    override fun onSupportNavigateUp() = findNavController(R.id.mainNavHost).navigateUp()
+    //override fun onSupportNavigateUp() = findNavController(R.id.mainNavHost).navigateUp()
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.mainMenuAbout -> this.toast("Test")
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     private fun checkConnection(): Boolean {
         val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
         val activeNetwork: NetworkInfo? = cm?.activeNetworkInfo
         return activeNetwork?.isConnected == true
+    }
+
+    public override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    public override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe
+    fun OnFetchListEvent(fetchListEvent: FetchListEvent) {
+        val databaseUtil: DatabaseUtil = (this.applicationContext as MyApplication).databaseUtil
+        fetchListEvent.userList.forEach { databaseUtil.insertUser(it) }
     }
 
     override fun onDestroy() {

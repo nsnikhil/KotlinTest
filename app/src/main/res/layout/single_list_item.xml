@@ -19,21 +19,33 @@
     android:id="@+id/listItem"
     android:layout_width="match_parent"
     android:layout_height="?listPreferredItemHeight"
+    android:background="?selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?selectableItemBackground"
     android:padding="@dimen/eight">
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/itemImage"
+        style="@style/vertical"
+        android:background="@drawable/circle" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/itemName"
         style="@style/listItemText"
+        android:paddingStart="@dimen/eight"
         android:text="@string/app_name"
         app:layout_constraintBottom_toTopOf="@id/itemPhone"
+        app:layout_constraintStart_toEndOf="@id/itemImage"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/itemPhone"
         style="@style/listItemSub"
+        android:paddingStart="@dimen/eight"
         android:text="@string/app_name"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/itemImage"
         app:layout_constraintTop_toBottomOf="@id/itemName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

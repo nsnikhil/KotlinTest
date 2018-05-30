@@ -25,6 +25,7 @@
     <string name="dialogAgeHint">Age</string>
     <string name="dialogAddressHint">Address</string>
     <string name="dialogEmailHint">Email</string>
+    <string name="dialogDateHint">Date</string>
     <!-- -->
 
     <!-- MENU-->

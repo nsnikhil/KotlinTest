@@ -16,24 +16,20 @@
 
 package com.nsnik.nrs.kotlintest.utils
 
-import androidx.lifecycle.MutableLiveData
 import com.nsnik.nrs.kotlintest.dagger.scopes.ApplicationScope
 import com.nsnik.nrs.kotlintest.data.UserEntity
+import com.nsnik.nrs.kotlintest.utils.events.FetchListEvent
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import org.greenrobot.eventbus.EventBus
 import retrofit2.Retrofit
 import timber.log.Timber
 import javax.inject.Inject
 
 @ApplicationScope
 class NetworkUtil @Inject constructor(private val retrofit: Retrofit) {
-    private val mUserList: MutableLiveData<List<UserEntity>> = MutableLiveData()
-
-    fun getUserList(): MutableLiveData<List<UserEntity>> {
-        return mUserList
-    }
 
     fun getUserListFromServer() {
         retrofit.create(RetrofitServiceApi::class.java)
@@ -42,7 +38,7 @@ class NetworkUtil @Inject constructor(private val retrofit: Retrofit) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<List<UserEntity>> {
                     override fun onSuccess(t: List<UserEntity>) {
-                        mUserList.value = t
+                        EventBus.getDefault().post(FetchListEvent(t))
                     }
 
                     override fun onSubscribe(d: Disposable) {

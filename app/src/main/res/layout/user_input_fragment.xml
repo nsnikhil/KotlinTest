@@ -26,7 +26,7 @@
         android:id="@+id/addUserAdd"
         style="@style/wrapContent"
         android:layout_margin="@dimen/sixteen"
-        android:src="@drawable/ic_outline_add_24px"
+        android:src="@drawable/ic_outline_save_alt_24px"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
