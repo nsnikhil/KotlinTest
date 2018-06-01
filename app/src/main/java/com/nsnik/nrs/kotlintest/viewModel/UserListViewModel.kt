@@ -23,11 +23,19 @@ import androidx.paging.PagedList
 import com.nsnik.nrs.kotlintest.MyApplication
 import com.nsnik.nrs.kotlintest.data.UserEntity
 import com.nsnik.nrs.kotlintest.utils.DatabaseUtil
+import com.nsnik.nrs.kotlintest.utils.NetworkUtil
 
 class UserListViewModel(application: Application) : AndroidViewModel(application) {
 
     private val databaseUtil: DatabaseUtil = (application as MyApplication).databaseUtil
+    private val networkUtil: NetworkUtil = (application as MyApplication).networkUtil
     var userList: LiveData<PagedList<UserEntity>> = databaseUtil.getUsersList()
 
+    fun insertUserLocal(userEntity: UserEntity) {
+        databaseUtil.insertUser(userEntity)
+    }
 
+    fun insertUserServer(userEntity: UserEntity) {
+        networkUtil.addUser(userEntity)
+    }
 }

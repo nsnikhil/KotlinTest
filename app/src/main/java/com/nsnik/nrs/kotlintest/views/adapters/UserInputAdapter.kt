@@ -16,8 +16,10 @@
 
 package com.nsnik.nrs.kotlintest.views.adapters
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
@@ -28,11 +30,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.kotlintest.R
+import com.nsnik.nrs.kotlintest.data.UserEntity
 import kotlinx.android.synthetic.main.single_details_image.view.*
 import kotlinx.android.synthetic.main.single_input_user_item.view.*
 import timber.log.Timber
+import java.util.*
 
-class UserInputAdapter constructor(private val context: Context?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+class UserInputAdapter constructor(private val context: Context?, val userEntity: UserEntity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val INPUT_TYPE_IMAGE: Int = 0
@@ -64,43 +69,31 @@ class UserInputAdapter constructor(private val context: Context?) : RecyclerView
     private fun bindInputFields(inputTextViewHolder: InputTextViewHolder, position: Int) {
         val resource: Resources? = context?.resources
         when (position) {
-            1 -> {
-                inputTextViewHolder.inputText.hint = resource?.getString(R.string.dialogNameHint)
-                inputTextViewHolder.inputText
-                        .setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context!!, R.drawable.ic_outline_account_circle_24px), null, null, null)
-            }
-            2 -> {
-                inputTextViewHolder.inputText.hint = resource?.getString(R.string.dialogAgeHint)
-                inputTextViewHolder.inputText.inputType = InputType.TYPE_CLASS_NUMBER
-                inputTextViewHolder.inputText
-                        .setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context!!, R.drawable.ic_outline_terrain_24px), null, null, null)
-            }
-            3 -> {
-                inputTextViewHolder.inputText.hint = resource?.getString(R.string.dialogPhoneHint)
-                inputTextViewHolder.inputText.inputType = InputType.TYPE_CLASS_PHONE
-                inputTextViewHolder.inputText
-                        .setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context!!, R.drawable.ic_outline_call_24px), null, null, null)
-            }
-            4 -> {
-                inputTextViewHolder.inputText.hint = resource?.getString(R.string.dialogAddressHint)
-                inputTextViewHolder.inputText.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
-                inputTextViewHolder.inputText
-                        .setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context!!, R.drawable.ic_outline_place_24px), null, null, null)
-            }
-            5 -> {
-                inputTextViewHolder.inputText.hint = resource?.getString(R.string.dialogEmailHint)
-                inputTextViewHolder.inputText.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-                inputTextViewHolder.inputText
-                        .setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context!!, R.drawable.ic_outline_mail_outline_24px), null, null, null)
-            }
-            6 -> {
-                inputTextViewHolder.inputText.hint = resource?.getString(R.string.dialogDateHint)
-                inputTextViewHolder.inputText.isEnabled = false
-                inputTextViewHolder.inputText.inputType = InputType.TYPE_CLASS_DATETIME
-                inputTextViewHolder.inputText
-                        .setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
-            }
+            1 -> modifyInput(inputTextViewHolder.inputText, resource?.getString(R.string.dialogNameHint), InputType.TYPE_CLASS_TEXT,
+                    (ContextCompat.getDrawable(context!!, R.drawable.ic_outline_account_circle_24px)))
+
+            2 -> modifyInput(inputTextViewHolder.inputText, resource?.getString(R.string.dialogAgeHint), InputType.TYPE_CLASS_NUMBER,
+                    (ContextCompat.getDrawable(context!!, R.drawable.ic_outline_terrain_24px)))
+
+            3 -> modifyInput(inputTextViewHolder.inputText, resource?.getString(R.string.dialogPhoneHint), InputType.TYPE_CLASS_PHONE,
+                    (ContextCompat.getDrawable(context!!, R.drawable.ic_outline_call_24px)))
+
+            4 -> modifyInput(inputTextViewHolder.inputText, resource?.getString(R.string.dialogAddressHint), InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS,
+                    (ContextCompat.getDrawable(context!!, R.drawable.ic_outline_place_24px)))
+
+            5 -> modifyInput(inputTextViewHolder.inputText, resource?.getString(R.string.dialogEmailHint), InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS,
+                    (ContextCompat.getDrawable(context!!, R.drawable.ic_outline_mail_outline_24px)))
+
+            6 -> modifyInput(inputTextViewHolder.inputText, resource?.getString(R.string.dialogDateHint), InputType.TYPE_CLASS_DATETIME,
+                    (ContextCompat.getDrawable(context!!, R.drawable.ic_outline_date_range_24px)), false)
         }
+    }
+
+    private fun modifyInput(inputEditText: TextInputEditText, hint: String?, inputType: Int, drawable: Drawable?, isFocusable: Boolean = true) {
+        inputEditText.hint = hint
+        inputEditText.inputType = inputType
+        inputEditText.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
+        inputEditText.isFocusableInTouchMode = isFocusable
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -112,15 +105,33 @@ class UserInputAdapter constructor(private val context: Context?) : RecyclerView
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val inputImage: ImageView = itemView.detailsImage
+
+        init {
+            RxView.clicks(itemView).subscribe { Timber.d("Image") }
+        }
     }
 
     inner class InputTextViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val inputText: TextInputEditText = itemView.inputDialogText
 
         init {
-            when (adapterPosition) {
-                6 -> RxView.clicks(inputText).subscribe { Timber.d("Test") }
-            }
+            RxView.clicks(inputText).subscribe { showDatePicker(inputText) }
         }
+    }
+
+    private fun showDatePicker(inputEditText: TextInputEditText) {
+
+        val datePickerListener = DatePickerDialog.OnDateSetListener { view, selectedYear, selectedMonth, selectedDay ->
+            val year = selectedYear.toString()
+            val month = (selectedMonth + 1).toString()
+            val day = selectedDay.toString()
+            inputEditText.setText("$day/$month/$year")
+        }
+
+        val cal = Calendar.getInstance()
+        val datePicker = DatePickerDialog(context, datePickerListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
+        datePicker.setCancelable(false)
+        datePicker.setTitle("Select the date")
+        datePicker.show()
     }
 }

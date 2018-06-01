@@ -30,7 +30,7 @@ import com.nsnik.nrs.kotlintest.MyApplication
 import com.nsnik.nrs.kotlintest.R
 import com.nsnik.nrs.kotlintest.utils.DatabaseUtil
 import com.nsnik.nrs.kotlintest.utils.events.FetchListEvent
-import com.nsnik.nrs.kotlintest.views.fragments.UserInputFragment
+import com.nsnik.nrs.kotlintest.views.fragments.UserListFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -47,8 +47,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(mainToolbar)
         //TODO REPLACE WITH NAVIGATION AFTER ALPHA 17
         if (checkConnection()) {
-            //(this.applicationContext as MyApplication).networkUtil.getUserListFromServer()
-            supportFragmentManager.transaction { add(R.id.mainContainer, UserInputFragment()) }
+            (this.applicationContext as MyApplication).networkUtil.getUserListFromServer()
+            supportFragmentManager.transaction { add(R.id.mainContainer, UserListFragment()) }
         }
     }
 
