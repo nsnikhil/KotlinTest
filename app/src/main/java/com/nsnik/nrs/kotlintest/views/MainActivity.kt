@@ -24,13 +24,12 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.toast
-import androidx.fragment.app.transaction
+import androidx.navigation.findNavController
 import com.nsnik.nrs.kotlintest.BuildConfig
 import com.nsnik.nrs.kotlintest.MyApplication
 import com.nsnik.nrs.kotlintest.R
 import com.nsnik.nrs.kotlintest.utils.DatabaseUtil
 import com.nsnik.nrs.kotlintest.utils.events.FetchListEvent
-import com.nsnik.nrs.kotlintest.views.fragments.UserListFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -47,12 +46,12 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(mainToolbar)
         //TODO REPLACE WITH NAVIGATION AFTER ALPHA 17
         if (checkConnection()) {
-            (this.applicationContext as MyApplication).networkUtil.getUserListFromServer()
-            supportFragmentManager.transaction { add(R.id.mainContainer, UserListFragment()) }
+//            (this.applicationContext as MyApplication).networkUtil.getUserListFromServer()
+//            supportFragmentManager.transaction { add(R.id.mainContainer, UserListFragment()) }
         }
     }
 
-    //override fun onSupportNavigateUp() = findNavController(R.id.mainNavHost).navigateUp()
+    override fun onSupportNavigateUp() = findNavController(R.id.mainNavHost).navigateUp()
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)

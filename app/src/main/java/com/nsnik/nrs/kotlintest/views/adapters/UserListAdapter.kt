@@ -17,24 +17,31 @@
 package com.nsnik.nrs.kotlintest.views.adapters
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.kotlintest.R
 import com.nsnik.nrs.kotlintest.data.UserEntity
 import com.nsnik.nrs.kotlintest.views.adapters.DiffUtil.UserDiffUtil
+import com.twitter.serial.stream.Serial
+import com.twitter.serial.stream.bytebuffer.ByteBufferSerial
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.single_list_item.view.*
 
 class UserListAdapter : PagedListAdapter<UserEntity, RecyclerView.ViewHolder>(UserDiffUtil()) {
 
     private lateinit var context: Context
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         context = parent.context
@@ -55,6 +62,26 @@ class UserListAdapter : PagedListAdapter<UserEntity, RecyclerView.ViewHolder>(Us
         val itemName: TextView? = itemView.itemName
         val itemPhone: TextView? = itemView.itemPhone
         val itemImage: ImageView? = itemView.itemImage
+
+        init {
+            compositeDisposable.add(RxView.clicks(itemView).subscribe({
+                val bundle = Bundle()
+                val serial: Serial = ByteBufferSerial()
+                val byteArray: ByteArray = serial.toByteArray(getItem(adapterPosition), UserEntity.SERIALIZER)
+                bundle.putByteArray(context.resources.getString(R.string.bundleKeyUserEntity), byteArray)
+                itemView.findNavController().navigate(R.id.listToDetails, bundle)
+            }))
+        }
+    }
+
+    private fun cleanUp() {
+        compositeDisposable.clear()
+        compositeDisposable.dispose()
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        cleanUp()
     }
 
 }

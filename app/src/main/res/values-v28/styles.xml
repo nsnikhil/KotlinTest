@@ -17,13 +17,19 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorPrimaryLight">@color/colorPrimaryLight</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorSecondaryDark">@color/colorSecondaryDark</item>
-        <item name="colorSecondaryLight">@color/colorSecondaryLight</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <!--<item name="colorPrimaryLight">@color/colorPrimaryLight</item>-->
+        <!--<item name="colorSecondary">@color/colorSecondary</item>-->
+        <!--<item name="colorSecondaryDark">@color/colorSecondaryDark</item>-->
+        <!--<item name="colorSecondaryLight">@color/colorSecondaryLight</item>-->
+        <!--<item name="colorAccent">@color/colorAccent</item>-->
+
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>
     </style>

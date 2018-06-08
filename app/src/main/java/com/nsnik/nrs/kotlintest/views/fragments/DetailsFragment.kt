@@ -22,25 +22,40 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nsnik.nrs.kotlintest.R
 import com.nsnik.nrs.kotlintest.data.UserEntity
+import com.nsnik.nrs.kotlintest.views.adapters.UserDetailAdapter
 import com.twitter.serial.stream.Serial
 import com.twitter.serial.stream.bytebuffer.ByteBufferSerial
-import timber.log.Timber
+import kotlinx.android.synthetic.main.fragment_details.*
 
 
 class DetailsFragment : Fragment() {
 
+    private lateinit var userDetailAdapter: UserDetailAdapter
+    private lateinit var userEntity: UserEntity
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view: View = inflater.inflate(R.layout.fragment_details, container, false)
+        return inflater.inflate(R.layout.fragment_details, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initialize()
-        return view
     }
 
     private fun initialize() {
         val serial: Serial = ByteBufferSerial()
-        val userEntity: UserEntity? = serial.fromByteArray(arguments?.getByteArray(activity?.resources?.getString(R.string.bundleKeyUserEntity)), UserEntity.SERIALIZER)
-        Timber.d(userEntity?.name.toString())
+        userEntity = serial.fromByteArray(arguments?.getByteArray(activity?.resources?.getString(R.string.bundleKeyUserEntity)), UserEntity.SERIALIZER)!!
+
+        userDetailAdapter = UserDetailAdapter(activity, userEntity)
+
+        detailsList.apply {
+            layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+            adapter = userDetailAdapter
+        }
     }
 
 }

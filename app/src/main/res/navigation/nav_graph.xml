@@ -27,6 +27,9 @@
         <action
             android:id="@+id/listToDetails"
             app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/listToInput"
+            app:destination="@id/inputFragment" />
     </fragment>
 
     <fragment
@@ -39,5 +42,11 @@
             android:defaultValue="null"
             app:type="userEntity" />
     </fragment>
+
+    <fragment
+        android:id="@+id/inputFragment"
+        android:name="com.nsnik.nrs.kotlintest.views.fragments.UserInputFragment"
+        android:label="add user"
+        tools:layout="@layout/user_input_fragment" />
 
 </navigation>

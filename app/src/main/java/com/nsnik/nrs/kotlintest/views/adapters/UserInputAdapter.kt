@@ -33,7 +33,6 @@ import com.nsnik.nrs.kotlintest.R
 import com.nsnik.nrs.kotlintest.data.UserEntity
 import kotlinx.android.synthetic.main.single_details_image.view.*
 import kotlinx.android.synthetic.main.single_input_user_item.view.*
-import timber.log.Timber
 import java.util.*
 
 
@@ -107,7 +106,7 @@ class UserInputAdapter constructor(private val context: Context?, val userEntity
         val inputImage: ImageView = itemView.detailsImage
 
         init {
-            RxView.clicks(itemView).subscribe { Timber.d("Image") }
+            RxView.clicks(itemView).subscribe { userEntity.avatar = "https://www.fakeurl.com/" }
         }
     }
 

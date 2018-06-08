@@ -24,6 +24,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding2.view.RxView
@@ -64,7 +65,7 @@ class UserListFragment : Fragment() {
 
     private fun listeners() {
         compositeDisposable.add(RxView.clicks(homeAdd).subscribe({
-
+            homeAdd.findNavController().navigate(R.id.listToInput)
         }))
     }
 

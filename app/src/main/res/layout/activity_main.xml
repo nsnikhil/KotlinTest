@@ -16,6 +16,7 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mainLayout"
     style="@style/matchParent"
     tools:context=".views.MainActivity">
@@ -24,18 +25,13 @@
         android:id="@+id/mainToolbar"
         style="@style/appBar" />
 
-    <!--<fragment-->
-    <!--android:id="@+id/mainNavHost"-->
-    <!--android:name="androidx.navigation.fragment.NavHostFragment"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_marginTop="?actionBarSize"-->
-    <!--app:defaultNavHost="true"-->
-    <!--app:navGraph="@navigation/nav_graph" />-->
-
-    <FrameLayout
-        android:id="@+id/mainContainer"
+    <fragment
+        android:id="@+id/mainNavHost"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="?actionBarSize"
-        style="@style/matchParent" />
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
