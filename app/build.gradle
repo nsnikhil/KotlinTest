@@ -15,12 +15,13 @@
  */
 
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.oss.licenses.plugin'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
-configurations {all*.exclude group: 'com.android.support'}
+configurations { all*.exclude group: 'com.android.support' }
 
 android {
     compileSdkVersion 'android-P'
@@ -66,7 +67,7 @@ android {
         }
     }
     testOptions {
-        //execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
     androidExtensions {
         experimental = true
@@ -97,6 +98,14 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0-alpha3'
 
     implementation 'androidx.constraintlayout:constraintlayout:1.1.0'
+
+    //implementation 'com.google.android.gms:play-services-oss-licenses:15.0.1'
+
+    implementation('com.google.android.gms:play-services-oss-licenses:15.0.1', {
+        exclude group: 'com.google.android.gms'
+    })
+
+    implementation 'androidx.browser:browser:1.0.0-alpha3'
 
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
@@ -145,10 +154,9 @@ dependencies {
     implementation 'android.arch.navigation:navigation-ui-ktx:1.0.0-alpha02'
     androidTestImplementation 'android.arch.navigation:navigation-testing-ktx:1.0.0-alpha02'
 
-//    def work_version = "1.0.0-alpha02"
-//    implementation "android.arch.work:work-runtime-ktx:$work_version"
-//    implementation "android.arch.work:work-firebase:$work_version"
-//    androidTestImplementation "android.arch.work:work-testing:$work_version"
+    implementation "android.arch.work:work-runtime-ktx:1.0.0-alpha02"
+    implementation "android.arch.work:work-firebase:1.0.0-alpha02"
+    androidTestImplementation "android.arch.work:work-testing:1.0.0-alpha02"
 
     implementation "com.squareup.retrofit2:retrofit:2.4.0"
     implementation "com.squareup.okhttp3:logging-interceptor:3.10.0"

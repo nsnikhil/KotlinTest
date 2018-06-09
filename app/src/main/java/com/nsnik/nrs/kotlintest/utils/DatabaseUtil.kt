@@ -22,14 +22,11 @@ import androidx.paging.PagedList
 import com.nsnik.nrs.kotlintest.dagger.scopes.ApplicationScope
 import com.nsnik.nrs.kotlintest.data.AppDatabase
 import com.nsnik.nrs.kotlintest.data.UserEntity
-import com.nsnik.nrs.kotlintest.utils.events.UserDeleteEvent
-import com.nsnik.nrs.kotlintest.utils.events.UserUpdateEvent
 import io.reactivex.Single
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -74,7 +71,6 @@ class DatabaseUtil @Inject constructor(private val appDatabase: AppDatabase) {
                 .observeOn(AndroidSchedulers.mainThread())
         single.subscribe(object : SingleObserver<List<Long>> {
             override fun onSuccess(t: List<Long>) {
-                EventBus.getDefault().post(UserUpdateEvent(userEntity))
                 t.forEach { Timber.d(it.toString()) }
             }
 
@@ -95,7 +91,6 @@ class DatabaseUtil @Inject constructor(private val appDatabase: AppDatabase) {
                 .observeOn(AndroidSchedulers.mainThread())
         single.subscribe(object : SingleObserver<Int> {
             override fun onSuccess(t: Int) {
-                EventBus.getDefault().post(UserUpdateEvent(userEntity))
                 Timber.d(t.toString())
             }
 
@@ -111,13 +106,11 @@ class DatabaseUtil @Inject constructor(private val appDatabase: AppDatabase) {
     }
 
     fun deleteUser(userEntity: UserEntity) {
-        val id = userEntity.id
         val single: Single<Unit> = Single.fromCallable({ appDatabase.getUserDao().deleteUser(userEntity) })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
         single.subscribe(object : SingleObserver<Unit> {
             override fun onSuccess(t: Unit) {
-                EventBus.getDefault().post(UserDeleteEvent(id))
                 Timber.d("Deletion Successful")
             }
 

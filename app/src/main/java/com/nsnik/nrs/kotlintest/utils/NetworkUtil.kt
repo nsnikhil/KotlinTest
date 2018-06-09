@@ -94,9 +94,9 @@ class NetworkUtil @Inject constructor(private val retrofit: Retrofit) {
                 })
     }
 
-    fun deleteUser(userEntity: UserEntity?) {
+    fun deleteUser(id: Int) {
         retrofit.create(RetrofitServiceApi::class.java)
-                .deleteUser(userEntity?.id)
+                .deleteUser(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<String> {

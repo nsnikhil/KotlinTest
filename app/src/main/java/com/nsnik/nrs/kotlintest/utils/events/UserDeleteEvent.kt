@@ -16,4 +16,6 @@
 
 package com.nsnik.nrs.kotlintest.utils.events
 
-class UserDeleteEvent(var userId: Int)
+import com.nsnik.nrs.kotlintest.data.UserEntity
+
+class UserDeleteEvent(var userEntity: UserEntity)

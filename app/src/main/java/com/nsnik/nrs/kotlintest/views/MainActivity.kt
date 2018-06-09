@@ -22,19 +22,28 @@ import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.annotation.NonNull
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.toast
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
+import androidx.test.espresso.IdlingResource
 import com.nsnik.nrs.kotlintest.BuildConfig
 import com.nsnik.nrs.kotlintest.MyApplication
 import com.nsnik.nrs.kotlintest.R
 import com.nsnik.nrs.kotlintest.utils.DatabaseUtil
+import com.nsnik.nrs.kotlintest.utils.SimpleIdlingResource
 import com.nsnik.nrs.kotlintest.utils.events.FetchListEvent
+import com.nsnik.nrs.kotlintest.viewModel.UserListViewModel
+import com.nsnik.nrs.kotlintest.views.fragments.dialog.AboutDialogFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
+
 class MainActivity : AppCompatActivity() {
+
+    private var mIdlingResource: SimpleIdlingResource? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,10 +53,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun initialize() {
         setSupportActionBar(mainToolbar)
-        //TODO REPLACE WITH NAVIGATION AFTER ALPHA 17
         if (checkConnection()) {
-//            (this.applicationContext as MyApplication).networkUtil.getUserListFromServer()
-//            supportFragmentManager.transaction { add(R.id.mainContainer, UserListFragment()) }
+            ViewModelProviders.of(this).get(UserListViewModel::class.java).fetchDataFromServer()
         }
     }
 
@@ -60,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.mainMenuAbout -> this.toast("Test")
+            R.id.mainMenuAbout -> AboutDialogFragment().show(supportFragmentManager, "about")
         }
         return super.onOptionsItemSelected(item)
     }
@@ -85,6 +92,13 @@ class MainActivity : AppCompatActivity() {
     fun OnFetchListEvent(fetchListEvent: FetchListEvent) {
         val databaseUtil: DatabaseUtil = (this.applicationContext as MyApplication).databaseUtil
         fetchListEvent.userList.forEach { databaseUtil.insertUser(it) }
+    }
+
+    @VisibleForTesting
+    @NonNull
+    fun getIdlingResource(): IdlingResource {
+        if (mIdlingResource == null) mIdlingResource = SimpleIdlingResource()
+        return mIdlingResource as SimpleIdlingResource
     }
 
     override fun onDestroy() {

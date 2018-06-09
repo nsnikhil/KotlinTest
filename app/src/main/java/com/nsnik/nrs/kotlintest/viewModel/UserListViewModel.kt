@@ -31,11 +31,27 @@ class UserListViewModel(application: Application) : AndroidViewModel(application
     private val networkUtil: NetworkUtil = (application as MyApplication).networkUtil
     var userList: LiveData<PagedList<UserEntity>> = databaseUtil.getUsersList()
 
+    fun fetchDataFromServer() {
+        networkUtil.getUserListFromServer()
+    }
+
     fun insertUserLocal(userEntity: UserEntity) {
         databaseUtil.insertUser(userEntity)
     }
 
     fun insertUserServer(userEntity: UserEntity) {
         networkUtil.addUser(userEntity)
+    }
+
+    fun deleteUserLocal(userEntity: UserEntity) {
+        databaseUtil.deleteUser(userEntity)
+    }
+
+    fun deleteUserServer(id: Int) {
+        networkUtil.deleteUser(id)
+    }
+
+    fun getUserById(id: Int): LiveData<UserEntity> {
+        return databaseUtil.getUserById(id)
     }
 }

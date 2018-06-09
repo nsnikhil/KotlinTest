@@ -36,12 +36,7 @@
         android:id="@+id/detailsFragment"
         android:name="com.nsnik.nrs.kotlintest.views.fragments.DetailsFragment"
         android:label="details"
-        tools:layout="@layout/fragment_details">
-        <argument
-            android:name="id"
-            android:defaultValue="null"
-            app:type="userEntity" />
-    </fragment>
+        tools:layout="@layout/fragment_details" />
 
     <fragment
         android:id="@+id/inputFragment"

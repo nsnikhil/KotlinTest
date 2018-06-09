@@ -18,11 +18,13 @@ package com.nsnik.nrs.kotlintest.views.adapters
 
 import android.content.Context
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.findNavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -32,11 +34,14 @@ import com.bumptech.glide.request.RequestOptions
 import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.kotlintest.R
 import com.nsnik.nrs.kotlintest.data.UserEntity
+import com.nsnik.nrs.kotlintest.utils.events.UserDeleteEvent
 import com.nsnik.nrs.kotlintest.views.adapters.DiffUtil.UserDiffUtil
 import com.twitter.serial.stream.Serial
 import com.twitter.serial.stream.bytebuffer.ByteBufferSerial
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.single_list_item.view.*
+import org.greenrobot.eventbus.EventBus
 
 class UserListAdapter : PagedListAdapter<UserEntity, RecyclerView.ViewHolder>(UserDiffUtil()) {
 
@@ -71,7 +76,31 @@ class UserListAdapter : PagedListAdapter<UserEntity, RecyclerView.ViewHolder>(Us
                 bundle.putByteArray(context.resources.getString(R.string.bundleKeyUserEntity), byteArray)
                 itemView.findNavController().navigate(R.id.listToDetails, bundle)
             }))
+
+            compositeDisposable.add(RxView.longClicks(itemView).subscribe(Consumer {
+                val popUp = PopupMenu(context, itemView, Gravity.END)
+                popUp.menuInflater.inflate(R.menu.list_pop_up_menu, popUp.menu)
+
+                popUp.setOnMenuItemClickListener {
+                    when (it.itemId) {
+                        R.id.menuPopUpListEdit -> itemClick(Actions.EDIT, adapterPosition)
+                        R.id.menuPopUpListDelete -> itemClick(Actions.DELETE, adapterPosition)
+                        else -> false
+                    }
+                }
+
+                popUp.show()
+            }))
         }
+    }
+
+    private fun itemClick(action: Actions, position: Int): Boolean {
+        when (action) {
+            Actions.EDIT -> {
+            }
+            Actions.DELETE -> EventBus.getDefault().post(UserDeleteEvent(getItem(position)!!))
+        }
+        return true
     }
 
     private fun cleanUp() {
@@ -84,4 +113,8 @@ class UserListAdapter : PagedListAdapter<UserEntity, RecyclerView.ViewHolder>(Us
         cleanUp()
     }
 
+}
+
+enum class Actions {
+    DELETE, EDIT
 }

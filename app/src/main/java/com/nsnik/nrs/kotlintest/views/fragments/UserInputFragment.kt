@@ -22,19 +22,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.*
 import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.kotlintest.R
 import com.nsnik.nrs.kotlintest.data.UserEntity
-import com.nsnik.nrs.kotlintest.utils.events.UserUpdateEvent
 import com.nsnik.nrs.kotlintest.viewModel.UserListViewModel
 import com.nsnik.nrs.kotlintest.views.adapters.UserInputAdapter
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.user_input_fragment.*
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
+import timber.log.Timber
 
 class UserInputFragment : Fragment() {
 
@@ -65,22 +65,7 @@ class UserInputFragment : Fragment() {
     }
 
     private fun listeners() {
-        compositeDisposable.add(RxView.clicks(addUserAdd).subscribe { listViewModel.insertUserLocal(userEntity) })
-    }
-
-    override fun onStart() {
-        super.onStart()
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        EventBus.getDefault().unregister(this)
-    }
-
-    @Subscribe
-    fun OnUserUpdateEvent(userUpdateEvent: UserUpdateEvent) {
-        listViewModel.insertUserServer(userUpdateEvent.userEntity)
+        compositeDisposable.add(RxView.clicks(addUserAdd).subscribe { if (checkValues()) insertUserWork() else Timber.d("Invalid Values") })
     }
 
     private fun cleanUp() {
@@ -91,5 +76,55 @@ class UserInputFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         cleanUp()
+    }
+
+    private fun checkValues(): Boolean {
+        return true
+    }
+
+    private fun insertUserWork() {
+
+        val workManager: WorkManager = WorkManager.getInstance()
+
+        val constraint = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+
+        val localInsertRequest: OneTimeWorkRequest = OneTimeWorkRequestBuilder<LocalInsertWorker>()
+                .build()
+
+        val networkInsertRequest: OneTimeWorkRequest = OneTimeWorkRequestBuilder<NetworkInsertWorker>()
+                .setConstraints(constraint)
+                .build()
+
+        workManager.beginWith(localInsertRequest)
+                .then(networkInsertRequest)
+                .enqueue()
+
+        workManager.getStatusById(networkInsertRequest.id)
+                .observe(this, Observer {
+                    if (it != null && it.state.isFinished) {
+                        //INSERT INTO DATABASE COMPLETE
+                    }
+                })
+    }
+
+    private inner class LocalInsertWorker : Worker() {
+
+        override fun doWork(): WorkerResult {
+            listViewModel.insertUserLocal(userEntity)
+            return WorkerResult.SUCCESS
+        }
+
+
+    }
+
+    private inner class NetworkInsertWorker : Worker() {
+
+        override fun doWork(): WorkerResult {
+            listViewModel.insertUserServer(userEntity)
+            return WorkerResult.SUCCESS
+        }
+
     }
 }

@@ -39,7 +39,9 @@ class DatabaseModule {
     @Provides
     @ApplicationScope
     fun getAppDatabase(@ApplicationQualifier context: Context, @DatabaseName databaseName: String): AppDatabase {
-        return Room.databaseBuilder(context, AppDatabase::class.java, databaseName).build()
+        return Room.databaseBuilder(context, AppDatabase::class.java, databaseName)
+                .fallbackToDestructiveMigration()
+                .build()
     }
 
 }

@@ -27,12 +27,17 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.*
 import com.jakewharton.rxbinding2.view.RxView
 import com.nsnik.nrs.kotlintest.R
+import com.nsnik.nrs.kotlintest.data.UserEntity
+import com.nsnik.nrs.kotlintest.utils.events.UserDeleteEvent
 import com.nsnik.nrs.kotlintest.viewModel.UserListViewModel
 import com.nsnik.nrs.kotlintest.views.adapters.UserListAdapter
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_list.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 class UserListFragment : Fragment() {
 
@@ -64,9 +69,80 @@ class UserListFragment : Fragment() {
     }
 
     private fun listeners() {
-        compositeDisposable.add(RxView.clicks(homeAdd).subscribe({
-            homeAdd.findNavController().navigate(R.id.listToInput)
-        }))
+        compositeDisposable.add(RxView.clicks(homeAdd).subscribe({ homeAdd.findNavController().navigate(R.id.listToInput) }))
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe
+    fun OnUserDeleteEvent(userDeleteEvent: UserDeleteEvent) {
+        deleteUserWork(userDeleteEvent.userEntity)
+    }
+
+    private fun deleteUserWork(userEntity: UserEntity) {
+
+        val workManager: WorkManager = WorkManager.getInstance()
+
+        val constraint = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+
+        val inputData: Data = mapOf("id" to userEntity.id).toWorkData()
+
+        val localDeleteRequest: OneTimeWorkRequest = OneTimeWorkRequestBuilder<TestLocalDeleteWorker>()
+                .setInputData(inputData)
+                .build()
+
+        val networkDeleteRequest: OneTimeWorkRequest = OneTimeWorkRequestBuilder<TestNetworkDeleteWorker>()
+                .setConstraints(constraint)
+                .setInputData(inputData)
+                .build()
+
+        workManager.beginWith(localDeleteRequest)
+                .then(networkDeleteRequest)
+                .enqueue()
+
+        val status = workManager.getStatusById(networkDeleteRequest.id)
+                .observe(this, Observer {
+                    if (it != null && it.state.isFinished) {
+                        //DELETE FROM DATABASE COMPLETE
+                    }
+                })
+    }
+
+    private inner class TestLocalDeleteWorker : Worker() {
+
+        override fun doWork(): WorkerResult {
+            deleteUserLocal()
+            return WorkerResult.SUCCESS
+        }
+
+        private fun deleteUserLocal() {
+            listViewModel.getUserById(inputData.getInt("id", -1)).observe(this@UserListFragment, Observer {
+                listViewModel.deleteUserLocal(it!!)
+            })
+        }
+    }
+
+    private inner class TestNetworkDeleteWorker : Worker() {
+
+        override fun doWork(): WorkerResult {
+            deleteUserNetwork()
+            return WorkerResult.SUCCESS
+        }
+
+        private fun deleteUserNetwork() {
+            listViewModel.deleteUserServer(inputData.getInt("id", -1))
+        }
+
     }
 
 }

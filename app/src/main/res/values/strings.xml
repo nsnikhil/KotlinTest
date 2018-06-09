@@ -30,10 +30,24 @@
 
     <!-- MENU-->
     <string name="menuMainAbout">About</string>
+    <string name="menuMainLicense">License</string>
+
+    <string name="menuPopUpListDelete">Delete</string>
+    <string name="menuPopUpListEdit">Edit</string>
     <!-- -->
 
     <!-- BUNDLE KEYS-->
     <string name="bundleKeyUserEntity">bundleKeyUserEntity</string>
-    <!-- -->
+
+    <!-- aboutStrings-->
+    <string name="aboutLibraries">Third party library used</string>
+    <string name="aboutLicense">License Info</string>
+    <string name="aboutLicenseUrl" translatable="false">https://github.com/nsnikhil/KotlinTest/blob/master/LICENSE</string>
+    <string name="aboutApp">Kotlin and Android Jetpack test</string>
+
+    <string name="aboutNikhil" translatable="false">This app is written by Nikhil Soni\n
+                   <a href="https://twitter.com/imnsnik">Twitter</a>|<a href="https://github.com/nsnikhil/">Github</a> </string>
+
+    <string name="aboutSourceCode" translatable="false">The source code is available on <a href="https://github.com/nsnikhil/KotlinTest">Github</a></string>
 
 </resources>
