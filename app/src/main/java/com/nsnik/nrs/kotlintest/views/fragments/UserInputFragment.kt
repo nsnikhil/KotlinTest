@@ -116,7 +116,6 @@ class UserInputFragment : Fragment() {
             return WorkerResult.SUCCESS
         }
 
-
     }
 
     private inner class NetworkInsertWorker : Worker() {
