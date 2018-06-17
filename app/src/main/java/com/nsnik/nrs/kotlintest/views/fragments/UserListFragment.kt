@@ -69,7 +69,7 @@ class UserListFragment : Fragment() {
     }
 
     private fun listeners() {
-        compositeDisposable.add(RxView.clicks(homeAdd).subscribe({ homeAdd.findNavController().navigate(R.id.listToInput) }))
+        compositeDisposable.add(RxView.clicks(homeAdd).subscribe { homeAdd.findNavController().navigate(R.id.listToInput) })
     }
 
     override fun onStart() {

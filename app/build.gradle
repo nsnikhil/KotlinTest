@@ -97,7 +97,7 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.0.0-alpha3'
 
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
 
     //implementation 'com.google.android.gms:play-services-oss-licenses:15.0.1'
 
@@ -154,9 +154,22 @@ dependencies {
     implementation 'android.arch.navigation:navigation-ui-ktx:1.0.0-alpha02'
     androidTestImplementation 'android.arch.navigation:navigation-testing-ktx:1.0.0-alpha02'
 
-    implementation "android.arch.work:work-runtime-ktx:1.0.0-alpha02"
-    implementation "android.arch.work:work-firebase:1.0.0-alpha02"
-    androidTestImplementation "android.arch.work:work-testing:1.0.0-alpha02"
+    //implementation 'android.arch.work:work-runtime-ktx:1.0.0-alpha02'
+    //implementation "android.arch.work:work-firebase:1.0.0-alpha02"
+    //androidTestImplementation "android.arch.work:work-testing:1.0.0-alpha02"
+
+    implementation('android.arch.work:work-runtime-ktx:1.0.0-alpha02', {
+        exclude group: 'android.arch.persistence.room'
+        exclude group: 'androidx.room'
+    })
+    implementation('android.arch.work:work-firebase:1.0.0-alpha02', {
+        exclude group: 'android.arch.persistence.room'
+        exclude group: 'androidx.room'
+    })
+    implementation('android.arch.work:work-testing:1.0.0-alpha02', {
+        exclude group: 'android.arch.persistence.room'
+        exclude group: 'androidx.room'
+    })
 
     implementation "com.squareup.retrofit2:retrofit:2.4.0"
     implementation "com.squareup.okhttp3:logging-interceptor:3.10.0"
